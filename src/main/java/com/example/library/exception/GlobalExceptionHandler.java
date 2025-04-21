@@ -34,6 +34,19 @@ public class GlobalExceptionHandler{
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CustomValidationException.class)
+    protected ResponseEntity<Object> ValidationExceptionCustomHandler(CustomValidationException exception) {
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("code", HttpStatus.BAD_REQUEST.value());
+        map.put("message", exception.getMessage());
+        map.put("timestamp", LocalDateTime.now());
+        map.put("data", "");
+
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(Exception.class)
     protected ResponseEntity<Object> GeneralExceptionHandler (Exception exception) {
         Map<String, Object> map = new HashMap<>();
 
