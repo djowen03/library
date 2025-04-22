@@ -3,6 +3,7 @@ package com.example.library.controller;
 import com.example.library.dto.PaginationResponse;
 import com.example.library.dto.ResponseHandler;
 import com.example.library.dto.request.LoanRequestDTO;
+import com.example.library.dto.response.CountRankLoanResponseDTO;
 import com.example.library.model.Loan;
 import com.example.library.service.LoanService;
 import jakarta.validation.Valid;
@@ -13,6 +14,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/v1/loan")
@@ -43,5 +47,12 @@ public class LoanController {
         loanService.insertLoan(request);
 
         return ResponseHandler.generateResponse("Success", HttpStatus.OK, "");
+    }
+
+    @GetMapping("count-rank")
+    public ResponseEntity<Object> getLoanBook(){
+        List<CountRankLoanResponseDTO> countRankLoanResponseDTO = loanService.getLoanCountRank();
+
+        return ResponseHandler.generateResponse("Success", HttpStatus.OK, countRankLoanResponseDTO);
     }
 }

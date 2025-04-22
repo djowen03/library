@@ -1,6 +1,7 @@
 package com.example.library.service;
 
 import com.example.library.dto.request.LoanRequestDTO;
+import com.example.library.dto.response.CountRankLoanResponseDTO;
 import com.example.library.exception.CustomValidationException;
 import com.example.library.model.Loan;
 import com.example.library.repository.BooksRepository;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class LoanService {
@@ -57,5 +60,11 @@ public class LoanService {
                 .build();
 
         loanRepository.save(loan);
+    }
+
+    public List<CountRankLoanResponseDTO> getLoanCountRank(){
+        List<CountRankLoanResponseDTO> countRankLoanResponseDTO = loanRepository.getLoanWithFavoriteAndRank();
+
+        return countRankLoanResponseDTO;
     }
 }
