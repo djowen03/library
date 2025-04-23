@@ -1,5 +1,4 @@
-need database mysql library.sql and kafka
-java 17
+need database mysql library.sql, kafka, and java 17
 
 how to install
 1. git clone the code
