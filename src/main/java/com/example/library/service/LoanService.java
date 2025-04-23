@@ -67,4 +67,19 @@ public class LoanService {
 
         return countRankLoanResponseDTO;
     }
+
+    public void returnLoan(Integer loanId){
+
+        Loan loan = loanRepository.findById(loanId)
+                .orElseThrow(() -> new CustomValidationException("Loan Not Found"));
+
+        if (loan.getReturnDate() == null) {
+            LocalDate localDate = LocalDate.now();
+            loan.setReturnDate(Date.valueOf(localDate));
+            loanRepository.save(loan);
+        }
+        else{
+            System.out.println("Loan id: " + loanId + " already return the book");
+        }
+    }
 }

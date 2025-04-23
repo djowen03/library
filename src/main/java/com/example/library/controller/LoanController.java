@@ -3,8 +3,10 @@ package com.example.library.controller;
 import com.example.library.dto.PaginationResponse;
 import com.example.library.dto.ResponseHandler;
 import com.example.library.dto.request.LoanRequestDTO;
+import com.example.library.dto.request.ReturnLoanDTO;
 import com.example.library.dto.response.CountRankLoanResponseDTO;
 import com.example.library.model.Loan;
+import com.example.library.service.KafkaService;
 import com.example.library.service.LoanService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,9 @@ public class LoanController {
 
     @Autowired
     LoanService loanService;
+
+    @Autowired
+    KafkaService kafkaService;
 
     @GetMapping("")
     public ResponseEntity<Object> getLoanList(
@@ -54,5 +59,12 @@ public class LoanController {
         List<CountRankLoanResponseDTO> countRankLoanResponseDTO = loanService.getLoanCountRank();
 
         return ResponseHandler.generateResponse("Success", HttpStatus.OK, countRankLoanResponseDTO);
+    }
+
+    @PostMapping("return")
+    public ResponseEntity<Object> returnLoanBook(@Valid @RequestBody ReturnLoanDTO request){
+
+        kafkaService.sendMessage(request.getLoanId());
+        return ResponseHandler.generateResponse("Success", HttpStatus.OK, "");
     }
 }
